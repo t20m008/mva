@@ -191,9 +191,4 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
-.part {
-  /* border-right: 1px solid black; */
-  /* border-left: 1px dashed black; */
-}
 </style>
