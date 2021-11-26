@@ -1,0 +1,59 @@
+.context-menu {
+  /* margin: 10px, 0px, 0px, 10px; */
+  padding: 0px;
+  width: 250px;
+  /*幅の調節*/
+  color: #000000;
+  /*文字色*/
+  background-color: #f7f7f7;
+  /*背景色*/
+  border: 1px solid #ccc;
+  /*線の太さ・色*/
+  border-radius: 8px;
+  /*角の丸み*/
+  box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: auto;
+  float: none;
+}
+
+.context-menu.open {}
+
+.context-menu.close {
+  display: none;
+}
+
+.context-menu ul {
+  font-size: 11pt;
+  font-family: 'Osaka';
+}
+
+.context-menu li {
+  padding: 3px;
+  list-style-type: none;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.context-menu li:last-child {
+  list-style-type: none;
+  border-bottom: none;
+  border-left: 1px solid #ccc;
+}
+
+.context-menu li:hover {
+  background-color: rgb(82, 82, 82);
+  color: white;
+}
+
+.context-menu li ul {
+  display: none;
+  list-style-type: none;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+
+li.ctx-copy-mathml .ctx-copy-tex {
+  cursor: copy !important;
+}
