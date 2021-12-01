@@ -1,29 +1,38 @@
+/* リセットCSS：すでに指定済みなら不要 */
+* {
+  box-sizing: border-box;
+}
+
+*::before {
+  box-sizing: border-box;
+}
+
+*::after {
+  box-sizing: border-box;
+}
+
+.focus {
+  margin: 0;
+  font-weight: bold;
+  border: solid 3px #6091d3;
+  border-radius: 10px;
+}
+
 .context-menu {
-  /* margin: 10px, 0px, 0px, 10px; */
   padding: 0px;
   width: 250px;
-  /*幅の調節*/
   color: #000000;
-  /*文字色*/
   background-color: #f7f7f7;
-  /*背景色*/
   border: 1px solid #ccc;
-  /*線の太さ・色*/
   border-radius: 8px;
-  /*角の丸み*/
   box-shadow: 0 10px 25px 0 rgba(0, 0, 0, 0.5);
   position: absolute;
-  z-index: auto;
-  float: none;
+  z-index: 1000;
+  text-align: left;
 }
 
-.context-menu.open {}
-
-.context-menu.close {
-  display: none;
-}
-
-.context-menu ul {
+.context-menu>ul {
+  padding-left: 20px;
   font-size: 11pt;
   font-family: 'Osaka';
 }
@@ -47,13 +56,197 @@
   color: white;
 }
 
+.context-menu #ctx-default-setting:hover {
+  background-color: #f7f7f7;
+  color: #000000;
+}
+
+.context-menu #ctx-default-setting-inline:hover {
+  background-color: #f7f7f7;
+  color: #000000;
+}
+
 .context-menu li ul {
-  display: none;
+  display: inherit;
   list-style-type: none;
   border-bottom: 1px solid #ccc;
   border-left: 1px solid #ccc;
 }
 
-li.ctx-copy-mathml .ctx-copy-tex {
-  cursor: copy !important;
+.context-menu li ul:hover {
+  display: inherit;
+  list-style-type: none;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  background-color: antiquewhite !important;
+}
+
+/* */
+label~label {
+  margin-left: 15px;
+}
+
+input[type=radio] {
+  margin-right: 8px;
+}
+
+/* ラジオボタン */
+.radio-btns input[type=radio] {
+  display: none;
+}
+
+.radio-btns label {
+  position: relative;
+  padding-left: 25px;
+}
+
+.radio-btns input[type=radio]+label::before {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  border: 1px solid #ddd;
+  left: 0;
+  top: 0;
+}
+
+.radio-btns input[type=radio]+label::after {
+  position: absolute;
+  content: '';
+  display: block;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #2e3175;
+  left: 3px;
+  top: 3px;
+  opacity: 0;
+  transition: .3s;
+}
+
+.radio-btns input[type=radio]:checked+label::after {
+  opacity: 1;
+}
+
+#labelCollapse:hover {
+  color: #2e5992
+    /* background-color: rgb(82, 82, 82); */
+}
+
+#labelExpand:hover {
+  color: #2e5992
+    /* background-color: rgb(82, 82, 82); */
+}
+
+#labelInlineAble:hover {
+  color: #2e5992
+    /* background-color: rgb(82, 82, 82); */
+}
+
+#labelInlineDisable:hover {
+  color: #2e5992
+    /* background-color: rgb(82, 82, 82); */
+}
+
+/* modal */
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  background-color: rgba(197, 197, 197, 0.5);
+
+}
+
+.modal-content {
+  background-color: #f4f4f4;
+  margin: 20% auto;
+  width: 40%;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 7px 20px 0 rgba(0, 0, 0, 0.17);
+  animation-name: modalopen;
+  animation-duration: 1s;
+}
+
+@keyframes modalopen {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-header h1 {
+  margin: 1rem 0;
+  font-size: 20px;
+}
+
+.modal-header {
+  background: lightblue;
+  padding: 3px 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modalClose {
+  font-size: 2em;
+}
+
+.modalClose:hover {
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 10px 20px;
+  color: black;
+  overflow: auto;
+  font-size: 2pt;
+}
+
+/* input range */
+
+/* 以下スライダーのCSS */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+  background: #8acdff;
+  height: 14px;
+  width: 100%;
+  border-radius: 10px;
+  border: solid 3px #dff1ff;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background: #53aeff;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
+}
+
+input[type="range"]::-moz-range-thumb {
+  background: #53aeff;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
+  border: none;
+}
+
+input[type="range"]::-moz-focus-outer {
+  border: 0;
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+  box-shadow: 0px 5px 10px -2px rgba(0, 0, 0, 0.3);
 }

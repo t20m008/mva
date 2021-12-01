@@ -3,7 +3,7 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - kex',
+    titleTemplate: '%s - t2m8',
     title: 'mva',
     meta: [
       { charset: 'utf-8' },
@@ -30,9 +30,9 @@ export default {
   plugins: [
     '@/plugins/vuetify.js',
     '~/plugins/katex.js',
-    '~/plugins/hoge.js',
     '~/plugins/firebase.js',
     '@/plugins/vue-context.js',
+    { src: '@/plugins/katex-localStorage.js', ssr: false },
     { src: '@/plugins/katex-context-menu.js', ssr: false },
     { src: '@/plugins/katex-collapsible.js', ssr: false },
     { src: '@/plugins/window.js', ssr: false },

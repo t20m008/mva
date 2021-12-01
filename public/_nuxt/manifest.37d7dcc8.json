@@ -1,0 +1,9 @@
+{
+  "name": "mva",
+  "short_name": "mva",
+  "icons": [],
+  "start_url": "/?standalone=true",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "lang": "en"
+}

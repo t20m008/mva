@@ -8,6 +8,7 @@
 import Firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import 'firebase/compat/firestore'
+import { getDefaultSetting } from './katex-localStorage'
 
 if (!Firebase.apps.length) {
   Firebase.initializeApp({
@@ -359,6 +360,28 @@ const addStyleOverFlowXAuto = () => {
     o.style.overflowX = 'auto'
     o.style.overflowY = 'visible'
     o.style.position = 'contents'
+  })
+}
+function allCollapse() {
+  const toggleButton = Array.from(document.getElementsByClassName('katex-extension-button'))
+
+  toggleButton.forEach((el, index) => {
+    try {
+      if (el.classList.contains('collapse-btn') === true) {
+        el.click()
+      }
+    } catch (error) {}
+  })
+}
+function allExpand() {
+  const toggleButton = Array.from(document.getElementsByClassName('katex-extension-button'))
+
+  toggleButton.forEach((el, index) => {
+    try {
+      if (el.classList.contains('expand-btn') === true) {
+        el.click()
+      }
+    } catch (error) {}
   })
 }
 const saveKatexStatus = (index, val) => {
@@ -1235,14 +1258,6 @@ function getUniqueStr(myStrong) {
   return new Date().getTime().toString(16) + Math.floor(strong * Math.random()).toString(16)
 }
 
-function setK() {
-  katex.forEach((ktx, index) => {
-    ktx.addEventListener('mouseover', (event) => {
-      console.log(event)
-      ktx.parentElement.style.border = '1px solid red'
-    })
-  })
-}
 async function setToggleDetail(element, index, type, stats) {
   if (type == 'symmetric') {
     element.addEventListener('change', (event) => {
@@ -1309,8 +1324,12 @@ async function setToggleDetail(element, index, type, stats) {
     // console.log('type not found')
   }
 }
-async function modifyKatex(collapse = true, reshape = true, katex_status) {
-  console.log('%cRun katex-collapsible.js', 'color: green; font-weight: bold; border: 1px solid green; padding: 4px;')
+async function katexCollapsible(collapse = true, reshape = true, katex_status) {
+  console.log(
+    '%cRun katex-collapsible.js',
+    `@import url("https://fonts.googleapis.com/css?family=Courgette"); font: 12px "Courgette", cursive; 
+    color: green; font-weight: bold; border: 1px solid green; border-radius: 10px; padding: 1px;`
+  )
   if (fsDocExists()) {
     fsSaveDocField()
   } else {
@@ -1327,12 +1346,16 @@ async function modifyKatex(collapse = true, reshape = true, katex_status) {
   const overFlowIndexList = getKatexOverFlowX()
   // await reshape(overFlowIndexList)
   addStyleOverFlowXAuto()
-  if (reshape) await reshape2(overFlowIndexList)
+  // if (reshape) await reshape2(overFlowIndexList)
 
+  // if (getDefaultSetting()['default-collapse']) {
+  //   console.log(getDefaultSetting()['default-collapse'])
+  //   console.log(JSON.parse(localStorage['katex-status'])[window.location.href])
+  //   console.log(localStorage.getItem('katex-status'))
+  // } else {
+  //   //
+  // }
   // context menu
-  // createContextMenu()
-  // setContextMenu()
-  // setK()
   if (collapse) {
     // collapseOnMounted
     katex_list.forEach((el, index) => {
@@ -1359,20 +1382,23 @@ async function modifyKatex(collapse = true, reshape = true, katex_status) {
         // type not found
       }
     })
-    // Connect collapse/expand buttons and methods
-    const katexExtensionButtons = Array.from(document.getElementsByClassName('katex-extension-button'))
-    let katexExtensionButtonType = null
-    katexExtensionButtons.forEach((katexExtensionButton, katexExtensionButtonIndex) => {
-      katexExtensionButtonType = katexExtensionButton.classList[2]
-      setToggleDetail(
-        katexExtensionButton,
-        katexExtensionButton.parentElement.parentElement.classList[2].split('-')[1],
-        katexExtensionButtonType
-      )
-    })
   }
+
+  // Connect collapse/expand buttons and methods
+  const katexExtensionButtons = Array.from(document.getElementsByClassName('katex-extension-button'))
+  let katexExtensionButtonType = null
+  katexExtensionButtons.forEach((katexExtensionButton, katexExtensionButtonIndex) => {
+    katexExtensionButtonType = katexExtensionButton.classList[2]
+    setToggleDetail(
+      katexExtensionButton,
+      katexExtensionButton.parentElement.parentElement.classList[2].split('-')[1],
+      katexExtensionButtonType
+    )
+  })
 }
 
 export default (context, inject) => {
-  inject('modifyKatex', modifyKatex)
+  inject('katexCollapsible', katexCollapsible)
 }
+
+export { allCollapse, allExpand }

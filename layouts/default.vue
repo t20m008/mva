@@ -141,7 +141,7 @@ export default {
         {
           icon: 'mdi-hexagon-slice-6',
           title: 'katex',
-          to: '/katex',
+          to: '/katex/katex',
         },
         {
           icon: 'mdi-trash-can-outline',
