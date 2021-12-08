@@ -1,12 +1,6 @@
 <template>
   <v-row justify="center" class="index">
     <v-col cols="10">
-      <div id="container1" v-katex>
-        <p>touch area</p>
-        <div id="touch-area1">$$f(x) = ax^2+bx+c$$</div>
-        <p>display area</p>
-        <div id="display-area1"></div>
-      </div>
       <v-parallax dark height="300" src="https://beiz.jp/images_P/green/green_00010.jpg">
         <v-row align="center" justify="center">
           <v-col class="text-center" cols="10">
@@ -182,43 +176,43 @@ export default {
     this.$katexContextMenu()
 
     Array.from(document.getElementsByClassName('katex')).forEach((k) => {})
-    const displayArea1 = document.getElementById('display-area1')
-    const touchArea1 = document.getElementById('touch-area1')
+    // const displayArea1 = document.getElementById('display-area1')
+    // const touchArea1 = document.getElementById('touch-area1')
 
-    // touchstartイベント
-    touchArea1.addEventListener('touchstart', () => {
-      displayArea1.innerHTML = getTimeStamp() + ' touchstart'
-    })
+    // // touchstartイベント
+    // touchArea1.addEventListener('touchstart', () => {
+    //   displayArea1.innerHTML = getTimeStamp() + ' touchstart'
+    // })
 
-    // touchendイベント
-    touchArea1.addEventListener('touchend', () => {
-      displayArea1.innerHTML = getTimeStamp() + ' touchend'
-    })
+    // // touchendイベント
+    // touchArea1.addEventListener('touchend', () => {
+    //   displayArea1.innerHTML = getTimeStamp() + ' touchend'
+    // })
 
-    // touchmoveイベント
-    touchArea1.addEventListener('touchmove', (event) => {
-      event.preventDefault() // 画面スクロールを防止
-      displayArea1.innerHTML = getTimeStamp() + ' touchmove'
-    })
+    // // touchmoveイベント
+    // touchArea1.addEventListener('touchmove', (event) => {
+    //   event.preventDefault() // 画面スクロールを防止
+    //   displayArea1.innerHTML = getTimeStamp() + ' touchmove'
+    // })
 
-    // touchcancelイベント
-    touchArea1.addEventListener('touchcancel', () => {
-      displayArea1.innerHTML = getTimeStamp() + ' touchcacel'
-    })
+    // // touchcancelイベント
+    // touchArea1.addEventListener('touchcancel', () => {
+    //   displayArea1.innerHTML = getTimeStamp() + ' touchcacel'
+    // })
 
     // タイムスタンプ取得
-    function getTimeStamp() {
-      const date = new Date()
-      return (
-        ('0' + date.getHours()).slice(-2) +
-        ':' +
-        ('0' + date.getMinutes()).slice(-2) +
-        ':' +
-        ('0' + date.getSeconds()).slice(-2) +
-        ':' +
-        ('0' + date.getMilliseconds()).slice(-3)
-      )
-    }
+    // function getTimeStamp() {
+    //   const date = new Date()
+    //   return (
+    //     ('0' + date.getHours()).slice(-2) +
+    //     ':' +
+    //     ('0' + date.getMinutes()).slice(-2) +
+    //     ':' +
+    //     ('0' + date.getSeconds()).slice(-2) +
+    //     ':' +
+    //     ('0' + date.getMilliseconds()).slice(-3)
+    //   )
+    // }
   },
 }
 </script>

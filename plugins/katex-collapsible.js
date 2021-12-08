@@ -38,6 +38,11 @@ let katex_html_collection_list = []
 let mathml_list = []
 let katex_mathml_html_collection_list = []
 
+// list of .katex-html
+let katexClass = []
+let katexHTMLClass = []
+let katexMathMLClass = []
+
 async function getKatex() {
   katex = await document.getElementsByClassName('katex')
   katex = Array.from(katex)
@@ -46,6 +51,16 @@ async function getKatex() {
   katex_mathml_html_collection_list = await document.getElementsByClassName('katex-mathml')
   mathml_list = Array.from(katex_mathml_html_collection_list)
 }
+
+async function loadKaTeX() {
+  katexClass = await document.getElementsByClassName('katex')
+  katexClass = Array.from(katexClass)
+  katexHTMLClass = await document.getElementsByClassName('katex-html')
+  katexHTMLClass = Array.from(katexHTMLClass)
+  katexMathMLClass = await document.getElementsByClassName('katex-mathml')
+  katexMathMLClass = Array.from(katexMathMLClass)
+}
+
 const addOrdinalNumberClass = async () => {
   // const katexHTMLCollectionList = document.getElementsByClassName('katex')
   // const katexList = Array.from(document.getElementsByClassName('katex'))
@@ -1337,6 +1352,7 @@ async function katexCollapsible(collapse = true, reshape = true, katex_status) {
   }
 
   await getKatex()
+  await loadKaTeX()
   await addOrdinalNumberClass()
   await addClassHorizontal()
   await addClassVertical()
@@ -1358,25 +1374,31 @@ async function katexCollapsible(collapse = true, reshape = true, katex_status) {
   // context menu
   if (collapse) {
     // collapseOnMounted
-    katex_list.forEach((el, index) => {
-      if (el.classList.contains('symmetric')) {
+    katexHTMLClass.forEach((katex, index) => {
+      if (katexClass[index].parentElement.classList.contains('katex-display')) {
+        katexHTMLClass[index].classList.add('display')
+      } else {
+        katexHTMLClass[index].classList.add('inline')
+      }
+      //
+      if (katex.classList.contains('symmetric')) {
         if (katex_status[index] == 1) {
           collapseSymmetric(index)
           createToggle(index, 1, true)
         } else createToggle(index, 0, false)
-      } else if (el.classList.contains('straight')) {
+      } else if (katex.classList.contains('straight')) {
         collapseStraight(index)
-      } else if (el.classList.contains('asymmetric')) {
+      } else if (katex.classList.contains('asymmetric')) {
         if (katex_status[index] == 1) {
           collapseAsymmetric(index)
           createToggle(index, 1, true)
         } else createToggle(index, 0, false)
-      } else if (el.classList.contains('horizontal')) {
+      } else if (katex.classList.contains('horizontal')) {
         if (katex_status[index] == 1) {
           collapseHorizontal(index)
           createToggle(index, 1, true)
         } else createToggle(index, 0, false)
-      } else if (el.classList.contains('horizontal-combined')) {
+      } else if (katex.classList.contains('horizontal-combined')) {
         // collapseHorizontalCombinedOnMounted(index)
       } else {
         // type not found
