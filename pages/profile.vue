@@ -1,8 +1,11 @@
 <template>
   <div>
-    <h1>User Profile</h1>
+    <p class="text-h3">Profile</p>
     <p v-if="User != null">Your e-mail is {{ User.email }}</p>
-    <v-btn @click="logout">Logout</v-btn>
+    <!-- <v-btn @click="logout">ログアウト</v-btn> -->
+    <p>
+      <NuxtLink to="/" class="text-h5">TOP</NuxtLink>
+    </p>
   </div>
 </template>
 
@@ -10,7 +13,6 @@
 export default {
   name: 'Profile',
   layout: 'default',
-  middleware: 'auth',
   data() {
     return {
       User: this.$store.state.authUser,

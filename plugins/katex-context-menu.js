@@ -6,7 +6,8 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 
-import { allCollapse, allExpand } from '@/plugins/katex-collapsible.js'
+import firebase from './firebase'
+import { allCollapse, allExpand, getUniqueStr } from '@/plugins/katex-collapsible.js'
 import { getDefaultSetting, mutateDefaultSetting } from '@/plugins/katex-localStorage.js'
 
 // list of .katex-html
@@ -67,7 +68,7 @@ function createContextMenu(index) {
   li2.innerText = 'MathMLをコピー'
   li3.innerText = 'TeXをコピー'
   li4.innerText = '全ての数式を折りたたむ'
-  li5.innerText = `全ての数式を展開する ${index}`
+  li5.innerText = `全ての数式を展開する`
   li5.style.borderBottom = '2px solid black'
   li6.innerText = '[*]デフォルトの開閉状態'
   li7.innerText = '[*]インライン数式の開閉'
@@ -232,6 +233,28 @@ function escape_html(string) {
     }[match]
   })
 }
+function fireStoreSaveLog(katexIndex, action) {
+  const katexMathML = Array.from(document.getElementsByClassName('katex-mathml'))
+
+  firebase
+    .firestore()
+    .collection('log')
+    .doc(firebase.auth().currentUser.uid)
+    .collection('history')
+    // .doc(String(Date.now()))
+    .doc(getUniqueStr(811))
+    .set({
+      action,
+      date: Date(),
+      href: window.location.href,
+      id: katexIndex,
+      // tex: katexMathML[katexIndex].innerText,
+      timestamp: Date.now(),
+    })
+    .then(() => {
+      console.log('Document successfully written!')
+    })
+}
 function showMathML(index) {
   createModal('MathML', escape_html(katexMathMLClass[index].innerHTML))
 }
@@ -268,8 +291,9 @@ function setCoordinateContextMenu(katexContextMenu, x, y) {
   }
 }
 function setFunctionContextMenu(katexContextMenuUl, i) {
-  const katexContextMenu = document.getElementById('katex-context-menu')
-  katexContextMenuUl.children.forEach((li, liIndex) => {
+  const katexContextMenu = Array.from(document.getElementById('katex-context-menu'))
+
+  Array.from(katexContextMenuUl.children).forEach((li, liIndex) => {
     if (liIndex === 0) {
       li.addEventListener('click', (event) => {
         showMathML(i)
@@ -288,10 +312,12 @@ function setFunctionContextMenu(katexContextMenuUl, i) {
       })
     } else if (liIndex === 4) {
       li.addEventListener('click', (event) => {
+        fireStoreSaveLog(-100, 'all-collapse')
         allCollapse()
       })
     } else if (liIndex === 5) {
       li.addEventListener('click', (event) => {
+        fireStoreSaveLog(-200, 'all-expand')
         allExpand()
       })
     } else if (liIndex === 6) {
@@ -302,11 +328,11 @@ function setFunctionContextMenu(katexContextMenuUl, i) {
   })
 }
 async function katexContextMenu() {
-  console.log(
-    '%cRun katex-context-menu.js',
-    `@import url("https://fonts.googleapis.com/css?family=Courgette"); font: 12px "Courgette", cursive; 
-    color: blue; font-weight: bold; border: 1px solid blue; border-radius: 10px; padding: 1px;`
-  )
+  // console.log(
+  //   '%cRun katex-context-menu.js',
+  //   `@import url("https://fonts.googleapis.com/css?family=Courgette"); font: 12px "Courgette", cursive;
+  //   color: blue; font-weight: bold; border: 1px solid blue; border-radius: 10px; padding: 1px;`
+  // )
 
   await loadKaTeX()
 
@@ -340,34 +366,37 @@ async function katexContextMenu() {
     }
   })
 
-  katexClass.forEach((katex, i) => {
-    katex.addEventListener('touchmove', (event) => {
-      event.preventDefault()
-      contextMenuDisplay = true
-      if (focusIndex !== null) {
-        katexClass[focusIndex].classList.remove('focus')
-      }
-      focusIndex = i
+  // SmartPhone
+  // katexClass.forEach((katex, i) => {
+  //   katex.addEventListener('touchmove', (event) => {
+  //     event.preventDefault()
+  //     contextMenuDisplay = true
+  //     if (focusIndex !== null) {
+  //       katexClass[focusIndex].classList.remove('focus')
+  //     }
+  //     focusIndex = i
 
-      katex.classList.add('focus')
-      const _katexContextMenu = document.getElementById('katex-context-menu')
-      if (_katexContextMenu) {
-        _katexContextMenu.remove()
-      }
-      try {
-        document.body.appendChild(createContextMenu(i))
+  //     katex.classList.add('focus')
+  //     const _katexContextMenu = document.getElementById('katex-context-menu')
+  //     if (_katexContextMenu) {
+  //       _katexContextMenu.remove()
+  //     }
+  //     try {
+  //       document.body.appendChild(createContextMenu(i))
 
-        const katexContextMenu = document.getElementById('katex-context-menu')
-        const katexContextMenuUl = document.getElementById('ctx-ul')
+  //       const katexContextMenu = document.getElementById('katex-context-menu')
+  //       const katexContextMenuUl = document.getElementById('ctx-ul')
 
-        // setCoordinateContextMenu(katexContextMenu, event.pageX, event.pageY)
-        setCoordinateContextMenu(katexContextMenu, 0, 0)
-        setFunctionContextMenu(katexContextMenuUl, i)
-      } catch (error) {
-        console.error(error)
-      }
-    })
-  })
+  //       // setCoordinateContextMenu(katexContextMenu, event.pageX, event.pageY)
+  //       setCoordinateContextMenu(katexContextMenu, 0, 0)
+  //       setFunctionContextMenu(katexContextMenuUl, i)
+  //     } catch (error) {
+  //       console.error(error)
+  //     }
+  //   })
+  // })
+
+  //
   // addEventListener('click', (e) => {
   //   // console.log(e.target, e)
   //   console.info(`contextMenuDisplay:${contextMenuDisplay}\nmodalDisplay:${modalDisplay}\nfocusIndex:${focusIndex}`)

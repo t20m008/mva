@@ -86,7 +86,7 @@ export default {
     b() {
       const katexs = document.getElementsByClassName('katex')
       Array.from(katexs).forEach((katex) => {
-        katex.style.border = '1px solid pink'
+        // katex.style.border = '1px solid pink'
       })
       const bases = document.getElementsByClassName('base')
       Array.from(bases).forEach((base) => {

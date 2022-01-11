@@ -82,7 +82,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .wrap1 {
   border: 1px solid black;
 }

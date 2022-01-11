@@ -4,18 +4,18 @@
       <div class="header">
         <!--Content before waves-->
         <div class="inner-header flex">
-          <v-row>
-            <v-col cols="12" class="px-10">
+          <v-row class="mt-10">
+            <v-col cols="8" class="c mt-10 px-10 font-weight-bold">
               <p>このページは、多変量解析☆演習の学習支援用ページです。</p>
-              <p>下のボタンからGoogleアカウントでログインして下さい。</p>
+              <p>下のボタンから龍谷大学のGoogleアカウントでログインして下さい。</p>
             </v-col>
-            <v-col>
+            <v-col cols="12">
               <v-btn
                 fab
                 elevation="10"
                 :loading="loading"
                 :disabled="loading"
-                color="green lighten-1"
+                color="green"
                 class="ma-2 white--text"
                 @click="
                   loader = 'loading'
@@ -24,6 +24,18 @@
               >
                 <v-icon dark> mdi-google </v-icon>
               </v-btn>
+            </v-col>
+            <v-col cols="6" class="c">
+              <v-card>
+                <v-card-title class="font-weight-bold">
+                  <v-icon color="yellow darken-4">mdi-alert</v-icon>
+                  個人情報の取り扱いについて
+                </v-card-title>
+                <v-card-text class="justify-end">
+                  <p>本サイト内では、数式の折りたたみと展開時に学籍番号と時刻を取得しています。</p>
+                  <p>取得したデータは、修士論文・研究のために用いる可能性がありますが、個人が特定できる情報は公表しません。</p>
+                </v-card-text>
+              </v-card>
             </v-col>
           </v-row>
         </div>
@@ -57,7 +69,7 @@
 <script>
 export default {
   layout: 'login',
-  middleware: 'auth',
+  // middleware: 'auth',
   data() {
     return {
       icon_google: require('@/assets/google-signin.png'),
@@ -98,7 +110,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.c {
+  justify-content: center;
+  position: relative;
+  margin: auto;
+}
 .custom-loader {
   animation: loader 1s infinite;
   display: flex;

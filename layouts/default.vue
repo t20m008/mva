@@ -141,13 +141,13 @@ export default {
         {
           icon: 'mdi-hexagon-slice-6',
           title: 'katex',
-          to: '/katex/katex',
+          to: '/katex/collection',
         },
-        {
-          icon: 'mdi-trash-can-outline',
-          title: 'trash',
-          to: '/trash',
-        },
+        // {
+        //   icon: 'mdi-trash-can-outline',
+        //   title: 'trash',
+        //   to: '/trash',
+        // },
       ],
       usermenus: [
         {

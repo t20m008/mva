@@ -3,7 +3,7 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - t2m8',
+    titleTemplate: '%s',
     title: 'mva',
     meta: [
       { charset: 'utf-8' },
@@ -24,7 +24,12 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ['@/assets/css/style.css', '@/assets/css/katex-collapsible.css', '@/assets/css/katex-context-menu.css'],
+  css: [
+    '@/assets/css/style.css',
+    '@/assets/css/katex-collapsible.css',
+    '@/assets/css/katex-context-menu.css',
+    '~/node_modules/highlight.js/styles/vs2015.css',
+  ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
@@ -32,15 +37,16 @@ export default {
     '~/plugins/katex.js',
     '~/plugins/firebase.js',
     '@/plugins/vue-context.js',
+    '@/plugins/vue-highlightjs',
     { src: '@/plugins/katex-localStorage.js', ssr: false },
     { src: '@/plugins/katex-context-menu.js', ssr: false },
     { src: '@/plugins/katex-collapsible.js', ssr: false },
-    { src: '@/plugins/window.js', ssr: false },
+    // { src: '@/plugins/window.js', ssr: false },
     { src: '@/plugins/sidebar.js', mode: 'client' },
-    { src: '@/plugins/date-dropdown.js', mode: 'client' },
-    { src: '@/plugins/enlargeable-image.js', mode: 'client' },
+    // { src: '@/plugins/date-dropdown.js', mode: 'client' },
+    // { src: '@/plugins/enlargeable-image.js', mode: 'client' },
     { src: '@/plugins/multi-split-pane.js', mode: 'client' },
-    { src: '@/plugins/tour.js', mode: 'client' },
+    // { src: '@/plugins/tour.js', mode: 'client' },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

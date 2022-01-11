@@ -83,11 +83,11 @@ export default {
   },
   mounted() {
     /* eslint-disable camelcase */
-    this.$execute()
+    // this.$execute()
     // eslint-disable-next-line no-unused-vars
-    const katex_status = this.$getKatexStatus()
-    this.$modifyKatex(true, false, katex_status)
-    this.contextMenu()
+    // const katex_status = this.$getKatexStatus()
+    // this.$modifyKatex(true, false, katex_status)
+    // this.contextMenu()
   },
   methods: {
     b() {

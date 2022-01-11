@@ -86,7 +86,6 @@ function mutateDefaultSetting(boolean) {
 }
 
 function createKatexStatus() {
-  console.log('create katex status', getDefaultSetting())
   localStorage['katex-status'] = []
   const katex_status = {}
   katex_status[window.location.href] = []
@@ -116,20 +115,14 @@ function katexLocalStorage() {
   try {
     // default setting
     if (existDefaultSetting()) {
-      console.log(existDefaultSetting())
-      //
+      // console.log(existDefaultSetting())
     } else {
-      console.log(existDefaultSetting())
-
       createDefaultSetting()
     }
 
     // katex status
     if (existGlobalKatexStatus()) {
-      console.log('existG', existGlobalKatexStatus())
       if (existLocalKatexStatus()) {
-        console.log('existL', existLocalKatexStatus())
-
         // load
         getKatexStatus()
       } else {
@@ -137,8 +130,6 @@ function katexLocalStorage() {
         addKatexStatus()
       }
     } else {
-      console.log('else')
-
       // create && set
       createKatexStatus()
     }
