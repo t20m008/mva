@@ -17,6 +17,11 @@ export default {
       User: this.$store.state.authUser,
     }
   },
+  created() {
+    if (!this.$store.getters.isLoggedIn) {
+      this.$router.push('/login')
+    }
+  },
   methods: {
     async logout() {
       await this.$fire.auth.signOut()

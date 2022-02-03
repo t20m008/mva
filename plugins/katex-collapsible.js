@@ -10,7 +10,8 @@
 // import { getDefaultSetting } from './katex-localStorage'
 
 import firebase from './firebase'
-
+const CollectionName = 'log_20220118'
+const CollectionAll = 'log_all'
 const window_width = window.innerWidth - 15
 const window_width_adjusted = window_width
 // list of .katex-html
@@ -64,11 +65,13 @@ const addOrdinalNumberClass = async () => {
     }
   })
 }
+
 const addStyle = async () => {
   // katex_list.forEach((katex) => {
   //   katex.style.overflow = 'auto revert'
   // })
 }
+
 const addClassHorizontal = async () => {
   let baseClassCount = 0
   let mrelEqCount = 0
@@ -147,6 +150,7 @@ const addClassHorizontal = async () => {
     }
   })
 }
+
 const addClassVertical = async () => {
   // check if there are multiple col-align-r/col-align-l class
   katexHTMLClass.forEach((katexHTML, katexHTMLIndex) => {
@@ -166,7 +170,7 @@ const addClassVertical = async () => {
 
       mtableClass.forEach((mtable, mtableIndex) => {
         if (mtable.classList.contains('matrix-mtable')) {
-        } else if (!mtable.classList.contains('matrix-mtable') && mtableIndex == 0) {
+        } else if (!mtable.classList.contains('matrix-mtable') && mtableIndex === 0) {
           const mtableChildren = Array.from(mtable.children)
           mtableChildren.forEach((mtableChild) => {
             if (mtableChild.className === 'col-align-r') existColAlignR = true
@@ -177,6 +181,7 @@ const addClassVertical = async () => {
             katexHTML.classList.add('multi-line')
             const colAlignRList = []
             const colAlignLList = []
+            const leftmostColTops = []
             mtableChildren.forEach((mtableChild) => {
               if (mtableChild.className === 'col-align-r') {
                 colAlignRList.push(mtableChild)
@@ -187,95 +192,172 @@ const addClassVertical = async () => {
             })
             let leftRowIndex = 0
             let rightRowIndex = 0
-            // Add classes to left lines
-            if (colAlignRList.length > 1) {
-              colAlignRList.forEach((colAlignR, i) => {
-                if (i === 0) {
-                  leftRowIndex = 1
-                } else {
+            // console.log(colAlignRList.length, colAlignLList.length)
+            if (colAlignRList.length === 3 && colAlignLList.length === 2) {
+              if (colAlignRList.length > 1 && colAlignLList.length > 1) {
+                colAlignRList.forEach((colAlignR, i) => {
                   leftRowIndex = 0
-                }
-                const cols = colAlignR.getElementsByClassName('mord')
-                cols.forEach((e, i) => {
-                  if (
-                    e.textContent.length > 0 &&
-                    e.className === 'mord' &&
-                    e.clientHeight > 1 &&
-                    e.parentElement.parentElement.parentElement.parentElement.parentElement.className.includes('col')
-                  ) {
-                    e.classList.add(`formula-${katexHTMLIndex}`, `row-${leftRowIndex}`, `left`)
-                    leftRowIndex++
+                  const cols = Array.from(colAlignR.getElementsByClassName('mord'))
+                  if (i === 0) {
+                    cols.forEach((e, i) => {
+                      if (
+                        e.textContent.length > 0 &&
+                        e.className === 'mord' &&
+                        e.clientHeight > 1 &&
+                        e.parentElement.parentElement.parentElement.parentElement.parentElement.className.includes('col')
+                      ) {
+                        leftmostColTops.push(e.parentElement.style.top)
+                        e.classList.add(`formula-${katexHTMLIndex}`, `row-${leftRowIndex}`, `left`)
+                        leftRowIndex++
+                      }
+                    })
+                  } else {
+                    cols.forEach((e, i) => {
+                      if (
+                        e.textContent.length > 0 &&
+                        e.className === 'mord' &&
+                        e.clientHeight > 1 &&
+                        e.parentElement.parentElement.parentElement.parentElement.parentElement.className.includes('col')
+                      ) {
+                        e.classList.add(
+                          `formula-${katexHTMLIndex}`,
+                          `row-${leftmostColTops.indexOf(e.parentElement.style.top)}`,
+                          `right`
+                        )
+                        leftRowIndex++
+                      }
+                    })
                   }
                 })
-              })
-            } else {
-              colAlignRList.forEach((colAlignR, i) => {
-                const cols = Array.from(colAlignR.getElementsByClassName('mord'))
-                cols.forEach((e, i) => {
-                  if (
-                    e.textContent.length > 0 &&
-                    e.className === 'mord' &&
-                    e.clientHeight > 1 &&
-                    e.parentElement.parentElement.parentElement.parentElement.parentElement.className.includes('col')
-                  ) {
-                    e.classList.add(`formula-${katexHTMLIndex}`, `row-${leftRowIndex}`, `left`)
-                    leftRowIndex++
-                  }
-                })
-              })
-            }
 
-            // Add classes to right lines
-            if (colAlignLList.length > 1) {
-              colAlignLList.forEach((colAlignL, i) => {
-                if (i === 0) {
-                  rightRowIndex = 1
-                } else {
+                colAlignLList.forEach((colAlignL, i) => {
                   rightRowIndex = 0
-                }
-                const cols = colAlignL.getElementsByClassName('mord')
-                cols.forEach((row) => {
-                  if (
-                    row.textContent.length > 0 &&
-                    row.className === 'mord' &&
-                    row.clientHeight > 1 &&
-                    row.parentElement.parentElement.parentElement.parentElement.parentElement.className.includes('col')
-                  ) {
-                    console.log(rightRowIndex, row)
-                    row.classList.add(`formula-${katexHTMLIndex}`, `row-${rightRowIndex}`, `right`)
-                    rightRowIndex++
+                  const cols = Array.from(colAlignL.getElementsByClassName('mord'))
+                  cols.forEach((e, i) => {
+                    if (
+                      e.textContent.length > 0 &&
+                      e.className === 'mord' &&
+                      e.clientHeight > 1 &&
+                      e.parentElement.parentElement.parentElement.parentElement.parentElement.className.includes('col')
+                    ) {
+                      // console.log(leftmostColTops, e.parentElement.style.top, leftmostColTops.indexOf(e.parentElement.style.top))
+                      // e.classList.add(`formula-${katexHTMLIndex}`, `row-${rightRowIndex}`, `right`)
+                      e.classList.add(
+                        `formula-${katexHTMLIndex}`,
+                        `row-${leftmostColTops.indexOf(e.parentElement.style.top)}`,
+                        `right`
+                      )
+
+                      rightRowIndex++
+                    }
+                  })
+                })
+              }
+              katexHTML.classList.add('mcsymmetric')
+            } else {
+              // Add classes to left lines
+              if (colAlignRList.length > 1) {
+                colAlignRList.forEach((colAlignR, i) => {
+                  if (i === 0) {
+                    leftRowIndex = 1
+                  } else {
+                    leftRowIndex = 0
+                  }
+                  const cols = Array.from(colAlignR.getElementsByClassName('mord'))
+                  try {
+                    cols.forEach((e, i) => {
+                      if (
+                        e.textContent.length > 0 &&
+                        e.className === 'mord' &&
+                        e.clientHeight > 1 &&
+                        e.parentElement.parentElement.parentElement.parentElement.parentElement.className.includes('col')
+                      ) {
+                        e.classList.add(`formula-${katexHTMLIndex}`, `row-${leftRowIndex}`, `left`)
+                        leftRowIndex++
+                      }
+                    })
+                  } catch (e) {
+                    console.error(e)
                   }
                 })
-              })
-            } else {
-              colAlignLList.forEach((colAlignL) => {
-                const cols = Array.from(colAlignL.getElementsByClassName('mord'))
-                cols.forEach((row, index) => {
-                  if (
-                    row.textContent.length > 0 &&
-                    row.className === 'mord' &&
-                    row.clientHeight > 1 &&
-                    row.parentElement.parentElement.parentElement.parentElement.parentElement.className.includes('col') &&
-                    row.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.className.includes(
-                      'base'
-                    ) &&
-                    !row.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.contains(
-                      'matrix-mtable'
-                    )
-                  ) {
-                    row.classList.add(`formula-${katexHTMLIndex}`, `xrow-${rightRowIndex}`, `right`)
-                    rightRowIndex++
+              } else {
+                colAlignRList.forEach((colAlignR, i) => {
+                  const cols = Array.from(colAlignR.getElementsByClassName('mord'))
+                  cols.forEach((e, i) => {
+                    if (
+                      e.textContent.length > 0 &&
+                      e.className === 'mord' &&
+                      e.clientHeight > 1 &&
+                      e.parentElement.parentElement.parentElement.parentElement.parentElement.className.includes('col')
+                    ) {
+                      e.classList.add(`formula-${katexHTMLIndex}`, `row-${leftRowIndex}`, `left`)
+                      leftRowIndex++
+                    }
+                  })
+                })
+              }
+
+              // Add classes to right lines
+              if (colAlignLList.length >= 1) {
+                colAlignLList.forEach((colAlignL, i) => {
+                  // if (i === 0) {
+                  //   rightRowIndex = 1
+                  // } else {
+                  //   rightRowIndex = 0
+                  // }
+                  const cols = Array.from(colAlignL.getElementsByClassName('mord'))
+                  try {
+                    cols.forEach((row, ri) => {
+                      if (
+                        row.textContent !== '⋮' &&
+                        row.textContent.length > 0 &&
+                        row.className === 'mord' &&
+                        row.clientHeight > 1 &&
+                        row.parentElement.parentElement.parentElement.parentElement.parentElement.className.includes('col')
+                      ) {
+                        row.classList.add(`formula-${katexHTMLIndex}`, `row-${rightRowIndex}`, `right`)
+                        rightRowIndex++
+                      } else if (row.textContent === '⋮') {
+                        row.classList.add('dots')
+                        // row.classList.add(`formula-${katexHTMLIndex}`, `row-${rightRowIndex}`, `right`)
+                      }
+                    })
+                  } catch (e) {
+                    console.error(e)
                   }
                 })
-              })
-            }
-            // eslint-disable-next-line no-console
-            if (leftRowIndex === rightRowIndex) {
-              katexHTML.classList.add('symmetric')
-            } else if (leftRowIndex === 0 && rightRowIndex > 0) {
-              katexHTML.classList.add('straight')
-            } else {
-              katexHTML.classList.add('asymmetric')
+              } else {
+                colAlignLList.forEach((colAlignL) => {
+                  const cols = Array.from(colAlignL.getElementsByClassName('mord'))
+                  cols.forEach((row, ri) => {
+                    if (
+                      row.textContent.length > 0 &&
+                      row.className === 'mord' &&
+                      row.clientHeight > 1 &&
+                      row.parentElement.parentElement.parentElement.parentElement.parentElement.className.includes('col') &&
+                      row.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.className.includes(
+                        'base'
+                      ) &&
+                      !row.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.contains(
+                        'matrix-mtable'
+                      )
+                    ) {
+                      console.log(row)
+                      row.classList.add(`formula-${katexHTMLIndex}`, `row-${rightRowIndex}`, `right`)
+                      rightRowIndex++
+                    }
+                  })
+                })
+              }
+              // eslint-disable-next-line no-console
+
+              if (leftRowIndex === rightRowIndex) {
+                katexHTML.classList.add('symmetric')
+              } else if (leftRowIndex === 0 && rightRowIndex > 0) {
+                katexHTML.classList.add('straight')
+              } else {
+                katexHTML.classList.add('asymmetric')
+              }
             }
           }
         }
@@ -283,6 +365,7 @@ const addClassVertical = async () => {
     }
   })
 }
+
 const addStyleOverFlowXAuto = () => {
   const ofx = document.getElementsByClassName('overflow-x')
   Array.from(ofx).forEach((o) => {
@@ -291,6 +374,7 @@ const addStyleOverFlowXAuto = () => {
     o.style.position = 'contents'
   })
 }
+
 function allCollapse() {
   const toggleButton = Array.from(document.getElementsByClassName('katex-extension-button'))
 
@@ -302,6 +386,7 @@ function allCollapse() {
     } catch (error) {}
   })
 }
+
 function allExpand() {
   const toggleButton = Array.from(document.getElementsByClassName('katex-extension-button'))
 
@@ -313,12 +398,14 @@ function allExpand() {
     } catch (error) {}
   })
 }
+
 const saveKatexStatus = (index, val) => {
   const localStorage_obj = JSON.parse(localStorage['katex-status'])
   localStorage_obj[window.location.href][index] = val
   const setjson = JSON.stringify(localStorage_obj)
   localStorage.setItem('katex-status', setjson)
 }
+
 const getKatexOverFlowX = () => {
   const index_list = []
   const katex_html_collection = document.getElementsByClassName('katex-html')
@@ -342,6 +429,7 @@ const getKatexOverFlowX = () => {
   })
   return index_list
 }
+
 const getPhraseEndList = (list) => {
   const phrase_end_list = []
   list.forEach((el, el_index) => {
@@ -349,6 +437,7 @@ const getPhraseEndList = (list) => {
   })
   return phrase_end_list
 }
+
 const getLeftmostList = (list) => {
   const leftmost_list = []
   list.forEach((el, el_index) => {
@@ -356,6 +445,7 @@ const getLeftmostList = (list) => {
   })
   return leftmost_list
 }
+
 async function reshape(overFlowList) {
   await overFlowList.forEach((index) => {
     // console.log(katex_list[index])
@@ -405,6 +495,7 @@ async function reshape(overFlowList) {
     }
   })
 }
+
 async function reshape2(overFlowList, enable = true) {
   await overFlowList.forEach((index) => {
     const katex_children = Array.from(katex_list[index].children)
@@ -525,18 +616,21 @@ async function reshape2(overFlowList, enable = true) {
     }
   })
 }
+
 function sumFront(array, index) {
   let sum = 0
   for (let i = 0; i < index; i++) {
     sum += array[i]
   }
 }
+
 function sumPart(array, start, last) {
   let sum = 0
   for (let i = start; i < last; i++) {
     sum += array[i]
   }
 }
+
 function collapseAsymmetric(n) {
   const formula = document.querySelectorAll(`[class~="formula-${n}"`)
   let numLeftLine = 0
@@ -608,6 +702,7 @@ function collapseAsymmetric(n) {
     }
   }
 }
+
 function collapseHorizontal(n) {
   let leftmostLastBaseIndex = 0
   let rightmostFirstBaseIndex = 0
@@ -633,6 +728,7 @@ function collapseHorizontal(n) {
   katex_list[n].classList.remove('expanded')
   katex_list[n].classList.add('collapsed')
 }
+
 function collapseHorizontalOnMounted(n) {
   let leftmostLastBaseIndex = 0
   let rightmostFirstBaseIndex = 0
@@ -657,6 +753,75 @@ function collapseHorizontalOnMounted(n) {
   })
   katex_list[n].classList.add('collapsed')
 }
+
+function collapseMultiColumnsSymmetric(n) {
+  const formula = document.querySelectorAll(`[class~="formula-${n}"`)
+  const leftmostCol = Array.from(katex_list[n].getElementsByClassName('left'))
+  const leftmostColTops = []
+  const line = leftmostCol.length // 行数
+  // 各行のtopを保持
+  leftmostCol.forEach((phrase, index) => {
+    leftmostColTops.push(phrase.parentElement.style.top)
+  })
+  katex_list[n].classList.add(`${leftmostColTops.slice(-1)[0]}`)
+
+  // 中間行の隠蔽
+  formula.forEach((phrase, index) => {
+    const rowIndex = phrase.className.match(/row-(\d)/)[1]
+    if (rowIndex > 0 && rowIndex < line - 1) {
+      // phrase.style.border = '1px dashed green'
+      phrase.style.display = 'none'
+      phrase.classList.add('gradation')
+    }
+    // 最終行のtop値 を 2行目のtop値 に置換
+    else if (rowIndex == line - 1) {
+      phrase.parentElement.style.top = leftmostColTops[1]
+    }
+  })
+  katex_list[n].classList.add('collapsed') // , `${lastRowElementStyleTop}`)
+  katex_list[n].classList.remove('expanded')
+}
+
+function expandMultiColumnsSymmetric(n) {
+  const formula = document.querySelectorAll(`[class~="formula-${n}"`)
+  const leftmostCol = Array.from(katex_list[n].getElementsByClassName('left'))
+  const leftmostColTops = []
+  const line = leftmostCol.length // 行数
+  let lastRowTop = 0
+  // 各行のtopを保持
+  leftmostCol.forEach((phrase, index) => {
+    leftmostColTops.push(phrase.parentElement.style.top)
+  })
+
+  // 中間行の表示
+  formula.forEach((phrase, index) => {
+    const rowIndex = phrase.className.match(/row-(\d)/)[1]
+    if (rowIndex > 0 && rowIndex < line - 1) {
+      // phrase.style.border = '1px dashed green'
+      phrase.style.display = ''
+    }
+    // 最終行のtop値 を 2行目のtop値 に置換
+    else if (rowIndex == line - 1) {
+      // phrase.parentElement.style.top = leftmostColTops[1]
+      // const katexHTMLClassList = Array.from(katexHTMLList[n].classList)
+      // katexHTMLClassList.forEach((className, classNameIndex) => {
+      Array.from(katex_list[n].classList).forEach((c, i) => {
+        if (c.match(/\w+em/g)) {
+          lastRowTop = c
+        }
+      })
+      phrase.parentElement.style.top = lastRowTop
+      //   if (className.match(/\w+em/g)) {
+      //     console.log(className)
+      //     lastElementStyleTop = katexHTMLList[n].classList[classNameIndex]
+      //   }
+      // })
+    }
+  })
+  katex_list[n].classList.add('expanded') // , `${lastRowElementStyleTop}`)
+  katex_list[n].classList.remove('collapsed')
+}
+
 function collapseStraight(n) {
   const katexHTMLList = document.getElementsByClassName('katex-html')
   const formula = document.querySelectorAll(`[class~="formula-${n}"`)
@@ -672,7 +837,13 @@ function collapseStraight(n) {
     }
   })
 }
+
 function collapseSymmetric(n) {
+  const dots = Array.from(document.getElementsByClassName('dots'))
+  dots.forEach((dot, doti) => {
+    dot.classList.add('gradation')
+    dot.style.display = 'none'
+  })
   const formula = document.querySelectorAll(`[class~="formula-${n}"`)
   const leftHeight = []
   const rightHeight = []
@@ -720,10 +891,8 @@ function collapseSymmetric(n) {
     })
   })
 
-  console.log(colLeftList, colRightList)
-
   colRightList.forEach((r, i) => {
-    console.log(r)
+    // console.log(r)
   })
   colRightList.forEach((row, index) => {
     if (index == 0) {
@@ -736,53 +905,54 @@ function collapseSymmetric(n) {
     }
   })
 
-  // let lastRowElementStyleTop = 0
-  // let secondElementStyleTop = 0
+  let lastRowElementStyleTop = 0
+  let secondElementStyleTop = 0
 
-  // try {
-  //   if (lastRowElementsInColRight.length != 0) {
-  //     lastRowElementStyleTop = lastRowElementsInColRight[0].parentElement.style.top
-  //     secondElementStyleTop = firstRowElementsInColLeft[0].parentElement.nextElementSibling.style.top
-  //   }
-  // } catch (e) {
-  //   console.error(e)
-  // }
+  try {
+    if (lastRowElementsInColRight.length != 0) {
+      lastRowElementStyleTop = lastRowElementsInColRight[0].parentElement.style.top
+      secondElementStyleTop = firstRowElementsInColLeft[0].parentElement.nextElementSibling.style.top
+    }
+  } catch (e) {
+    console.error(e)
+  }
 
-  // lastRowElementsInColLeft.forEach((row) => {
-  //   row.parentElement.style.top = secondElementStyleTop
-  // })
+  lastRowElementsInColLeft.forEach((row) => {
+    row.parentElement.style.top = secondElementStyleTop
+  })
 
-  // lastRowElementsInColRight.forEach((row) => {
-  //   row.parentElement.style.top = secondElementStyleTop
-  // })
+  lastRowElementsInColRight.forEach((row) => {
+    row.parentElement.style.top = secondElementStyleTop
+  })
 
-  // let firstRowHeight = 0
-  // let lastRowHeight = 0
+  let firstRowHeight = 0
+  let lastRowHeight = 0
 
-  // firstRowElementsInColLeft.forEach((e, i) => {
-  //   if (i == 0) firstRowHeight = e.clientHeight
-  //   else firstRowHeight = Math.max(firstRowHeight, e.clientHeight)
-  // })
+  firstRowElementsInColLeft.forEach((e, i) => {
+    if (i == 0) firstRowHeight = e.clientHeight
+    else firstRowHeight = Math.max(firstRowHeight, e.clientHeight)
+  })
 
-  // firstRowElementsInColRight.forEach((e, i) => {
-  //   if (i == 0) firstRowHeight = Math.max(firstRowHeight, e.clientHeight)
-  //   else firstRowHeight = Math.max(firstRowHeight, e.clientHeight)
-  // })
+  firstRowElementsInColRight.forEach((e, i) => {
+    if (i == 0) firstRowHeight = Math.max(firstRowHeight, e.clientHeight)
+    else firstRowHeight = Math.max(firstRowHeight, e.clientHeight)
+  })
 
-  // lastRowElementsInColLeft.forEach((e, i) => {
-  //   if (i == 0) lastRowHeight = e.clientHeight
-  //   else lastRowHeight = Math.max(lastRowHeight, e.clientHeight)
-  // })
+  lastRowElementsInColLeft.forEach((e, i) => {
+    if (i == 0) lastRowHeight = e.clientHeight
+    else lastRowHeight = Math.max(lastRowHeight, e.clientHeight)
+  })
 
-  // lastRowElementsInColRight.forEach((e, i) => {
-  //   if (i == 0) lastRowHeight = Math.max(lastRowHeight, e.clientHeight)
-  //   else lastRowHeight = Math.max(lastRowHeight, e.clientHeight)
-  // })
+  lastRowElementsInColRight.forEach((e, i) => {
+    if (i == 0) lastRowHeight = Math.max(lastRowHeight, e.clientHeight)
+    else lastRowHeight = Math.max(lastRowHeight, e.clientHeight)
+  })
 
   katex_list[n].style.height = `${firstRowHeight + lastRowHeight}px`
   katex_list[n].classList.add('collapsed', `${lastRowElementStyleTop}`)
   katex_list[n].classList.remove('expanded')
 }
+
 function collapseSymmetricOnMounted(n) {
   const katexHTMLList = document.getElementsByClassName('katex-html')
   const formula = document.querySelectorAll(`[class~="formula-${n}"`)
@@ -886,6 +1056,7 @@ function collapseSymmetricOnMounted(n) {
   katexHTMLList[n].classList.add('collapsed', `${lastRowElementStyleTop}`)
   katexHTMLList[n].classList.remove('expanded')
 }
+
 // function createToggle(stats) {
 //   let checked = ''
 //   if (stats) {
@@ -1039,6 +1210,7 @@ function createToggle(index, checked, collapsed) {
   else if (katex_list[index].classList.contains('asymmetric')) type = 'asymmetric'
   else if (katex_list[index].classList.contains('horizontal')) type = 'horizontal'
   else if (katex_list[index].classList.contains('horizontal-combined')) type = 'horizontal-combined'
+  else if (katex_list[index].classList.contains('mcsymmetric')) type = 'mcsymmetric'
   else type = 'none'
 
   toggle.innerHTML = innerHTML(type, checked, collapsed)
@@ -1052,6 +1224,7 @@ function createToggle(index, checked, collapsed) {
     katex[index].after(toggle)
   }
 }
+
 function expandAsymmetric(n) {
   // console.log(`expandAsymmetric(${n})`)
   const katexHTML = document.getElementsByClassName('katex-html')
@@ -1091,6 +1264,7 @@ function expandAsymmetric(n) {
     })
   }
 }
+
 function expandHorizontal(n) {
   // 11/11 Thu. 修正済み
   let leftmostLastBaseIndex = 0
@@ -1114,7 +1288,12 @@ function expandHorizontal(n) {
   katex_list[n].classList.remove('collapsed')
   katex_list[n].classList.add('expanded')
 }
+
 function expandSymmetric(n) {
+  const dots = Array.from(document.getElementsByClassName('dots'))
+  dots.forEach((dot, doti) => {
+    dot.style.display = ''
+  })
   const katexHTMLList = document.getElementsByClassName('katex-html')
   const formula = document.querySelectorAll(`[class~="formula-${n}"`)
 
@@ -1149,25 +1328,28 @@ function expandSymmetric(n) {
     })
   }
 }
+
 function fireStoreDocExists() {
   // eslint-disable-next-line no-extra-boolean-cast
   if (!!firebase.auth().currentUser) {
     firebase
       .firestore()
-      .collection('log')
+      .collection(CollectionName)
       .doc(firebase.auth().currentUser.uid)
       .get()
       .then((doc) => {
-        return doc.exists
+        // return doc.exists
+        // console.log('fireStoreDocExists')
       })
   }
 }
+
 function fireStoreSaveDocField() {
   // eslint-disable-next-line no-extra-boolean-cast
   if (!!firebase.auth().currentUser) {
     firebase
       .firestore()
-      .collection('log')
+      .collection(CollectionName)
       .doc(firebase.auth().currentUser.uid)
       .set({
         displayName: firebase.auth().currentUser.displayName,
@@ -1179,19 +1361,20 @@ function fireStoreSaveDocField() {
       })
   }
 }
+
 function fireStoreSaveLog(katexIndex, action) {
   const katexMathML = Array.from(document.getElementsByClassName('katex-mathml'))
 
   firebase
     .firestore()
-    .collection('log')
+    .collection(CollectionName)
     .doc(firebase.auth().currentUser.uid)
     .collection('history')
     // .doc(String(Date.now()))
     .doc(getUniqueStr(811))
     .set({
       action,
-      date: Date(),
+      locale: new Date().toLocaleString(),
       href: window.location.href,
       id: katexIndex,
       tex: katexMathML[katexIndex].innerText,
@@ -1201,6 +1384,29 @@ function fireStoreSaveLog(katexIndex, action) {
       // console.log('Document successfully written!')
     })
 }
+
+function fireStoreSaveLogAll(katexIndex, action) {
+  const katexMathML = Array.from(document.getElementsByClassName('katex-mathml'))
+  firebase
+    .firestore()
+    .collection(CollectionAll)
+    .doc(getUniqueStr(999))
+    .set({
+      displayName: firebase.auth().currentUser.displayName,
+      email: firebase.auth().currentUser.email,
+      uid: firebase.auth().currentUser.uid,
+      action,
+      locale: new Date().toLocaleString(),
+      href: window.location.href,
+      id: katexIndex,
+      tex: katexMathML[katexIndex].innerText,
+      timestamp: Date.now(),
+    })
+    .then(() => {
+      // console.log('fsSaveDocField!')
+    })
+}
+
 function getUniqueStr(myStrong) {
   let strong = 1000
   if (myStrong) strong = myStrong
@@ -1218,6 +1424,7 @@ async function setToggleDetail(element, index, type, stats) {
         collapseSymmetric(index)
         fireStoreSaveLog(index, 'collapse')
         saveKatexStatus(index, 1)
+        fireStoreSaveLogAll(index, 'collapse')
       } else {
         event.target.classList.remove('expand-btn')
         event.target.classList.add('collapse-btn')
@@ -1226,6 +1433,7 @@ async function setToggleDetail(element, index, type, stats) {
         expandSymmetric(index)
         fireStoreSaveLog(index, 'expand')
         saveKatexStatus(index, 0)
+        fireStoreSaveLogAll(index, 'expand')
       }
     })
   } else if (type == 'asymmetric') {
@@ -1238,6 +1446,7 @@ async function setToggleDetail(element, index, type, stats) {
         collapseAsymmetric(index)
         fireStoreSaveLog(index, 'collapse')
         saveKatexStatus(index, 1)
+        fireStoreSaveLogAll(index, 'collapse')
       } else {
         event.target.classList.remove('expand-btn')
         event.target.classList.add('collapse-btn')
@@ -1246,6 +1455,29 @@ async function setToggleDetail(element, index, type, stats) {
         expandAsymmetric(index)
         fireStoreSaveLog(index, 'expand')
         saveKatexStatus(index, 0)
+        fireStoreSaveLogAll(index, 'expand')
+      }
+    })
+  } else if (type == 'mcsymmetric') {
+    element.addEventListener('change', (event) => {
+      if (element.checked) {
+        event.target.classList.remove('collapse-btn')
+        event.target.classList.add('expand-btn')
+        event.target.classList.remove(`mcbtn-${index}`)
+        event.target.classList.add(`mebtn-${index}`)
+        collapseMultiColumnsSymmetric(index)
+        fireStoreSaveLog(index, 'collapse')
+        saveKatexStatus(index, 1)
+        fireStoreSaveLogAll(index, 'collapse')
+      } else {
+        event.target.classList.remove('expand-btn')
+        event.target.classList.add('collapse-btn')
+        event.target.classList.remove(`mebtn-${index}`)
+        event.target.classList.add(`mcbtn-${index}`)
+        expandMultiColumnsSymmetric(index)
+        fireStoreSaveLog(index, 'expand')
+        saveKatexStatus(index, 0)
+        fireStoreSaveLogAll(index, 'expand')
       }
     })
   } else if (type == 'horizontal') {
@@ -1258,6 +1490,7 @@ async function setToggleDetail(element, index, type, stats) {
         collapseHorizontal(index)
         fireStoreSaveLog(index, 'collapse')
         saveKatexStatus(index, 1)
+        fireStoreSaveLogAll(index, 'collapse')
       } else {
         event.target.classList.remove('expand-btn')
         event.target.classList.add('collapse-btn')
@@ -1266,6 +1499,7 @@ async function setToggleDetail(element, index, type, stats) {
         expandHorizontal(index)
         fireStoreSaveLog(index, 'expand')
         saveKatexStatus(index, 0)
+        fireStoreSaveLogAll(index, 'expand')
       }
     })
   } else if (type == 'horizontalcombined') {
@@ -1273,6 +1507,7 @@ async function setToggleDetail(element, index, type, stats) {
     // console.log('type not found')
   }
 }
+
 async function katexCollapsible(collapse = true, reshape = true, katex_status) {
   // console.log(
   //   '%cRun katex-collapsible.js',
@@ -1287,11 +1522,11 @@ async function katexCollapsible(collapse = true, reshape = true, katex_status) {
 
   // console.table(l)
   // console.log('fireStoreDocExists:', fireStoreDocExists())
-  // if (fireStoreDocExists()) {
-  //   fireStoreSaveDocField()
-  // } else {
-  //   fireStoreSaveDocField()
-  // }
+  if (fireStoreDocExists()) {
+    fireStoreSaveDocField()
+  } else {
+    fireStoreSaveDocField()
+  }
 
   fireStoreSaveDocField()
 
@@ -1337,6 +1572,11 @@ async function katexCollapsible(collapse = true, reshape = true, katex_status) {
           collapseAsymmetric(index)
           createToggle(index, 1, true)
         } else createToggle(index, 0, false)
+      } else if (katex.classList.contains('mcsymmetric')) {
+        if (katex_status[index] == 1) {
+          collapseMultiColumnsSymmetric(index)
+          createToggle(index, 1, true)
+        } else createToggle(index, 0, false)
       } else if (katex.classList.contains('horizontal')) {
         if (katex_status[index] == 1) {
           collapseHorizontal(index)
@@ -1365,6 +1605,7 @@ async function katexCollapsible(collapse = true, reshape = true, katex_status) {
 
 export default (context, inject) => {
   inject('katexCollapsible', katexCollapsible)
+  inject('add', addClassVertical)
 }
 
-export { allCollapse, allExpand, getUniqueStr }
+export { allCollapse, allExpand, getUniqueStr, CollectionName, CollectionAll }

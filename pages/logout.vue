@@ -5,7 +5,7 @@
         <!--Content before waves-->
         <div class="inner-header flex">
           <v-row>
-            <v-col cols="12">
+            <v-col cols="12" class="c mt-10 px-10 font-weight-bold">
               <span>ログアウトしています</span>
             </v-col>
             <v-col cols="12">

@@ -154,7 +154,7 @@ export default {
           icon: 'mdi-account',
           title: 'ユーザー情報',
           to: '/profile',
-          color: 'primary',
+          // color: 'primary',
         },
         {
           icon: 'mdi-cog',
@@ -165,7 +165,7 @@ export default {
           icon: 'mdi-logout-variant',
           title: 'ログアウト',
           to: '/logout',
-          color: 'red',
+          // color: 'red',
         },
       ],
       sidemenu: [

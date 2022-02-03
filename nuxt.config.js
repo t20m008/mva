@@ -41,6 +41,8 @@ export default {
     { src: '@/plugins/katex-localStorage.js', ssr: false },
     { src: '@/plugins/katex-context-menu.js', ssr: false },
     { src: '@/plugins/katex-collapsible.js', ssr: false },
+    { src: '@/plugins/katex-collapsible-no-log.js', ssr: false },
+    { src: '@/plugins/record-access.js', ssr: false },
     // { src: '@/plugins/window.js', ssr: false },
     { src: '@/plugins/sidebar.js', mode: 'client' },
     // { src: '@/plugins/date-dropdown.js', mode: 'client' },

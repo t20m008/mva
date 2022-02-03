@@ -26,13 +26,13 @@
       $$ \int_0^\pi \sin{mx}\cos{nx} dx = \frac{1-(-1)^{m-n}}{m^2 - n^2} = \begin{cases} 0 & ( m-n \in even ) \\ \frac{2m}{m^2 -
       n^2} & ( m-n \in odd ) \end{cases} $$
 
-      <div class="wrap2">
+      <div class="wrap2 mt-10">
         <div class="wrap1">
           $$ \int_0^\pi \sin{mx}\cos{nx} dx = \frac{1-(-1)^{m-n}}{m^2 - n^2} = \begin{cases} 0 & ( m-n \in even ) \\ \frac{2m}{m^2
           - n^2} & ( m-n \in odd ) \end{cases} $$
         </div>
       </div>
-      <div v-katex:auto>
+      <div v-katex:auto class="mt-15">
         $$ \begin{aligned} \int \frac{1}{x(x+2)}dx &= \int \frac{1}{2}\left(\frac{1}{x}+\frac{-1}{x+2}\right) dx \\ &=
         \frac{1}{2}\int \frac{1}{x}dx - \frac{1}{2}\int \frac{1}{x+2}dx \\ &= \frac{1}{2}\left(\log |x| -\log|x+2|\right)+C \\ &=
         \frac{1}{2}\log \left|\frac{x}{x+2}\right|+C \end{aligned} $$

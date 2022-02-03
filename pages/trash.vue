@@ -14,6 +14,11 @@ export default {
   beforeCreate() {
     console.log(this.$root.context)
   },
+  created() {
+    if (!this.$store.getters.isLoggedIn) {
+      this.$router.push('/login')
+    }
+  },
   mounted() {
     alert(localStorage['katex-status'])
     localStorage.clear()

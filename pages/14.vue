@@ -39,7 +39,7 @@
               <v-icon>mdi-flag-variant</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>確率過程のひとつである自己回帰モデル $ \mathrm{MA}(k) $ を説明できる.</v-list-item-title>
+              <v-list-item-title>確率過程のひとつである移動平均モデル $ \mathrm{MA}(k) $ を説明できる.</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -54,9 +54,9 @@
       <p>
         データ $ \{X_t\}_{t=0,1,\ldots,L-1} $ の周期性を知るには, <span class="keyword">離散フーリエ変換</span>も使える.
         フーリエ変換 $$ \tilde{X}_s=\sum_{t=0}^{L-1} e^{-\frac{2\pi s t}{L}} X_t $$ で, $ |\tilde{X}_s|^2 $ が大きいなら, 周期 $
-        L/s $の成分の寄与が大きい.
+        L/s $ の成分の寄与が大きい.
       </p>
-      <div class="citing">フーリエ解析</div>
+      <div class="citing break">フーリエ解析</div>
       <hr />
 
       <v-alert text class="my-5" color="green darken-4" icon="mdi-note" border="left" elevation="5"
@@ -124,7 +124,7 @@
       \color{#0000FF}{\text{(確率変数以外は共分散に関係しない)}}\\ &= 0 \end{aligned} $$
 
       <p>以下では, もっと複雑で面白い場合を扱う.</p>
-      <p>そこでは, $t$ でなく $x_{t-1}$ を説明変数にする(ようなもの)</p>
+      <p class="break">そこでは, $t$ でなく $x_{t-1}$ を説明変数にする(ようなもの)</p>
 
       <v-alert
         text
@@ -154,10 +154,10 @@
 
               \[X_t=\phi_1 \cdot X_{t-1}+\epsilon_t.\quad (t\geq1)\] ただし, \(\epsilon_t\) \(t=0,1,2,\ldots\)は,
               <ul>
-                <li>WN1:\(\mathrm{E}[\epsilon_t]=0\)</li>
+                <li>WN1 : \(\mathrm{E}[\epsilon_t]=0\)</li>
 
-                <li>WN1a: \(\mathrm{E}[\epsilon_t \epsilon_t]=\sigma^2\)</li>
-                <li>WN1b: \(\mathrm{E}[\epsilon_t \epsilon_s]=0\) &nbsp; \((t\neq s)\) 独立</li>
+                <li>WN1a : \(\mathrm{E}[\epsilon_t \epsilon_t]=\sigma^2\)</li>
+                <li>WN1b : \(\mathrm{E}[\epsilon_t \epsilon_s]=0\) &nbsp; \((t\neq s)\) 独立</li>
 
                 <li>\(\mathrm{E}[X(t)\epsilon_s]=0\) &nbsp; $(t \lt s)$</li>
               </ul></v-card-text
@@ -187,7 +187,7 @@
         icon="mdi-checkbox-marked-circle"
         border="left"
         elevation="2"
-        ><b>$\mathrm{AR}(1)$の生成</b>
+        ><b>$\mathrm{AR}(1)$ の生成</b>
       </v-alert>
       <p>漸化式のりで計算できる.</p>
       $$ \begin{aligned} X_t &= \phi_1 X_{t-1}+\epsilon_t \\ &= \phi_1 (\phi_1 X_{t-2}+\epsilon_{t-1})+\epsilon_t \\ &= \phi_1
@@ -239,7 +239,7 @@
         icon="mdi-checkbox-marked-circle"
         border="left"
         elevation="2"
-        ><b>$ \mathrm{AR}(1) $の母平均値, 母共分散</b>
+        ><b>$ \mathrm{AR}(1) $ の母平均値, 母共分散</b>
       </v-alert>
       \[ \begin{aligned} \mathrm{E}[X_t] &=\mathrm{E}[\phi_1^t X_0 + \sum_{k=0}^{t-1} \phi_1^k \epsilon_{t-k}]\\ &=\phi_1^t
       \mathrm{E}[X_0] \end{aligned} \] \[ \begin{aligned} \mathrm{V}[X_t] &=\mathrm{V}[\phi_1^t X_0 + \sum_{k=0}^{t-1} \phi_1^k
@@ -265,9 +265,10 @@
       +\frac{1-(\phi_1^2)^{t-s}}{1-\phi_1^2}\phi_1^s \sigma^2\\ &\rightarrow \begin{cases} \frac{\phi_1^s\sigma^2}{1-\phi_1^2} &
       (|\phi_1|\lt1)\\ \approx t& (|\phi_1|=1)\\ \approx t \phi_1^{2t} & (|\phi_1|\gt1) \end{cases}\\ \end{aligned} $$
 
-      <p>
-        $ |\phi_1|\lt1 $ のとき定常. このとき, ラグ\(s\)の自己相関係数は $ r(s)= \frac{\phi_1^s\sigma^2}{1-\phi_1^2} \quad
-        (|\phi_1|\lt1) $ つまり等比数列. そうなってるやつあったでしょ? あれから $\phi_1$ が読み取れる.
+      <p class="mt-5">
+        $ |\phi_1|\lt1 $ のとき定常. このとき, ラグ\(s\)の自己相関係数は
+        <span class="bold">$ r(s)= \frac{\phi_1^s\sigma^2}{1-\phi_1^2} \quad (|\phi_1|\lt1) $</span> つまり等比数列.
+        そうなってるやつあったでしょ? あれから $\phi_1$ が読み取れる.
       </p>
 
       <v-alert
@@ -279,7 +280,7 @@
         icon="mdi-checkbox-marked-circle"
         border="left"
         elevation="2"
-        ><b>$ \mathrm{AR}(1) $の自己相関係数とコレログラム</b>
+        ><b>$ \mathrm{AR}(1) $ の自己相関係数とコレログラム</b>
       </v-alert>
 
       <v-row>
@@ -294,7 +295,7 @@
       <v-divider></v-divider>
 
       <v-alert text class="my-5" color="green darken-4" icon="mdi-note" border="left" elevation="5"
-        ><b>\(m\)次の自己回帰モデル$ \mathrm{AR}(m) $</b>
+        ><b>\(m\)次の自己回帰モデル $ \mathrm{AR}(m) $</b>
       </v-alert>
 
       <v-alert
@@ -307,14 +308,14 @@
         border="left"
         elevation="2"
       >
-        <b>\(m\)次の自己回帰モデル$ \mathrm{AR}(m) $</b>
+        <b>\(m\)次の自己回帰モデル $ \mathrm{AR}(m) $</b>
       </v-alert>
 
       <v-row class="center">
         <v-col cols="10" class="pa-0 ma-0">
           <v-card color="light-blue lighten-5" class="my-4">
             <v-sheet color="light-blue darken-3">
-              <v-card-title color="" class="py-1 pl-3 white--text">\(m\)次の自己回帰モデルAR(\(m\))</v-card-title>
+              <v-card-title color="" class="py-1 pl-3 white--text">\(m\)次の自己回帰モデル $\mathrm{AR}(m)$</v-card-title>
             </v-sheet>
             <v-card-text>
               <ul>
@@ -343,7 +344,7 @@
       >
         <b>Quiz L14-1</b>
       </v-alert>
-      <a href="../w14.pdf">Quiz L14-1</a>
+      <a href="https://www.data.math.ryukoku.ac.jp/course/mva_2021/w14.pdf">Quiz L14-1</a>
 
       <v-alert
         text
@@ -355,11 +356,11 @@
         border="left"
         elevation="2"
       >
-        <b>AR($1$) の生成</b>
+        <b>$\mathrm{AR}(1)$ の生成</b>
       </v-alert>
       <p>母集団からの標本抽出=確率過程のシミュレーション</p>
       <div class="citing">シミュレーション及び実習(確率の現れないシミュレーション)</div>
-      <p>ARMAは$ \mathrm{AR}(1) $</p>
+      <p>$\mathrm{ARMA}$ は $ \mathrm{AR}(1) $</p>
       を一般化したモデル
 
       <pre v-highlightjs>
@@ -413,7 +414,7 @@
         border="left"
         elevation="2"
       >
-        <b>AR(\(m\))モデルの推定と時系列の予測</b>
+        <b>$\mathrm{AR}(m)$ モデルの推定と時系列の予測</b>
       </v-alert>
 
       <pre v-highlightjs>
@@ -430,7 +431,7 @@
       <v-divider></v-divider>
 
       <v-alert text class="my-5" color="green darken-4" icon="mdi-note" border="left" elevation="5">
-        <b>\(k\)次の移動平均モデル$ \mathrm{MA}(k) $ </b>
+        <b>\(k\)次の移動平均モデル $ \mathrm{MA}(k) $ </b>
       </v-alert>
       <v-alert
         text
@@ -462,12 +463,12 @@
               \[X_t=\beta_0+ \epsilon_t+\theta_1\epsilon_{t-1}+\cdots +\theta_k\epsilon_k.\quad (t\geq k)\] ただし, \(\epsilon_t\)
               \(t=0,1,2,\ldots\)は,
               <ul>
-                <li>WN1 \(\mathrm{E}[\epsilon_t]=0\)</li>
+                <li>WN1 : \(\mathrm{E}[\epsilon_t]=0\)</li>
 
-                <li>WN1a \(\mathrm{E}[\epsilon_t \epsilon_t]=\sigma^2\) &nbsp; \(\sigma\)</li>
-                <li>WN1b \(\mathrm{E}[\epsilon_t \epsilon_s]=0\) &nbsp; \((t\neq s)\) 独立</li>
+                <li>WN1a : \(\mathrm{E}[\epsilon_t \epsilon_t]=\sigma^2\) &nbsp; \(\sigma\)</li>
+                <li>WN1b : \(\mathrm{E}[\epsilon_t \epsilon_s]=0\) &nbsp; \((t\neq s)\) 独立</li>
 
-                <li>\(\mathrm{E}[X(t)\epsilon_s]=0\) &nbsp; \((t\gt s)\)</li>
+                <li>\(\mathrm{E}[X(t)\epsilon_s]=0\) &nbsp; \((t\lt s)\)</li>
               </ul>
             </v-card-text>
           </v-card>
@@ -493,6 +494,13 @@
       &=(1+\theta_1^2+\cdots+\theta_k^2)\sigma^2 \end{aligned} $$ $$ \begin{aligned} \mathrm{Cov}[X_t,X_{t-s}]&=\\ &=\cdots\\ &=
       \begin{cases} 0&(k\gt s)\\ (\theta_0\theta_{s}+\theta_1\theta_{s+1}+\cdots +\theta_{k-s}\theta_k)\sigma^2 &(k\leq s)
       \end{cases} \end{aligned} $$ -->
+      \[\mathrm{E}[X_t]=0\] \[ \begin{aligned}
+      \mathrm{V}[X_t]&=\mathrm{V}[\epsilon_t+\theta_1\epsilon_{t-1}+\cdots+\theta_k\epsilon_k]\\ &=
+      \mathrm{V}[\epsilon_t]+\theta_1^2\mathrm{V}[\epsilon_{t-1}]+\cdots+\theta_k^2\mathrm{V}[\epsilon_k]\\
+      &=(1+\theta_1^2+\cdots+\theta_k^2)\sigma^2 \end{aligned} \] \[ \begin{aligned}
+      \mathrm{Cov}[X_t,X_{t-s}]&=\mathrm{E}[(\epsilon_t+\theta_1\epsilon_{t-1}+\cdots+\theta_k\epsilon_{t-k})(\epsilon_{t-s}+\theta_1\epsilon_{t-s-1}+\cdots+\theta_k\epsilon_{t-s-k})]\\
+      &=\cdots\\ &= \begin{cases} 0&(k\lt s)\\ (\theta_0\theta_{s}+\theta_1\theta_{s+1}+\cdots +\theta_{k-s}\theta_k)\sigma^2
+      &(k\geq s) \end{cases} \end{aligned} \]
 
       <v-alert
         text
@@ -527,7 +535,7 @@
       >
         <b>Quiz L14-2</b>
       </v-alert>
-      <a href="../w14.pdf">Quiz L14-2</a>
+      <a href="https://www.data.math.ryukoku.ac.jp/course/mva_2021/w14.pdf ">Quiz L14-2</a>
 
       <v-alert
         text
@@ -539,16 +547,16 @@
         border="left"
         elevation="2"
       >
-        <b>$ \mathrm{MA}(k) $の生成</b>
+        <b>$ \mathrm{MA}(k) $ の生成</b>
       </v-alert>
 
       <pre v-highlightjs>
         <code class="python">
-from statsmodels.tsa.arima_process import ArmaProcess
-ar = [1] #
-ma = [1,0.5,0.2] # [theta_0,theta_1,theta_2]
-MA = ArmaProcess(ar,ma) # 自己回帰モデルを計算するオブジェクト
-x = MA.generate_sample(nsample = 50) # 時間の長さ=50
+          from statsmodels.tsa.arima_process import ArmaProcess
+          ar = [1] #
+          ma = [1,0.5,0.2] # [theta_0,theta_1,theta_2]
+          MA = ArmaProcess(ar,ma) # 移動平均モデルを計算するオブジェクト
+          x = MA.generate_sample(nsample = 50) # 時間の長さ=50
         </code>
       </pre>
 
@@ -566,8 +574,8 @@ x = MA.generate_sample(nsample = 50) # 時間の長さ=50
             </v-list-item-icon>
             <v-list-item-content>
               <v-list-item-title
-                >\(m,k\)次の自己回帰移動平均モデルARMA(\(m,k\)) 漸化式の右辺が,
-                AR(\(m\))とMA(\(k\))の和になっているもの.</v-list-item-title
+                >\(m,k\)次の自己回帰移動平均モデル $\mathrm{ARMA}(m,k)$ 漸化式の右辺が, $\mathrm{AR}(m)$ と $\mathrm{MA}(k)$
+                の和になっているもの.</v-list-item-title
               >
             </v-list-item-content>
           </v-list-item>
@@ -576,7 +584,7 @@ x = MA.generate_sample(nsample = 50) # 時間の長さ=50
               <v-icon>mdi-circle-medium</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>\(m,k\)次の自己回帰和分移動平均モデルARIMA(\(m,k\)).</v-list-item-title>
+              <v-list-item-title>\(m,k\)次の自己回帰和分移動平均モデル $\mathrm{ARIMA}(m,k)$ .</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-list-item>
@@ -584,7 +592,7 @@ x = MA.generate_sample(nsample = 50) # 時間の長さ=50
               <v-icon>mdi-circle-medium</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-              <v-list-item-title>階差がARMA(\(m,k\))にしたがう時系列. それ自身は非定常でありうる.</v-list-item-title>
+              <v-list-item-title>階差が $\mathrm{ARMA}(m,k)$ にしたがう時系列. それ自身は非定常でありうる.</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -606,6 +614,8 @@ export default {
     }
   },
   mounted() {
+    this.$recordAccess()
+
     /* eslint-disable camelcase */
     const NodeList = document.querySelectorAll('span .katex-mathml .katex')
     Array.from(NodeList).forEach((Node) => {
@@ -646,11 +656,24 @@ h3 {
 .block-body {
   background-color: #eeffff;
 }
-
+.break {
+  break-after: page;
+}
+.bold {
+  font-size: 16px;
+}
 .keyword {
+  font-weight: bold;
   color: red;
 }
-
+.alert {
+  font-weight: bold;
+  color: red;
+}
+.citing {
+  font-weight: bold;
+  color: rgb(59, 168, 132);
+}
 .center {
   justify-content: center;
   position: relative;

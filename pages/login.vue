@@ -6,8 +6,10 @@
         <div class="inner-header flex">
           <v-row class="mt-10">
             <v-col cols="8" class="c mt-10 px-10 font-weight-bold">
-              <p>このページは、多変量解析☆演習の学習支援用ページです。</p>
-              <p>下のボタンから龍谷大学のGoogleアカウントでログインして下さい。</p>
+              <span>
+                <p>このページは、多変量解析☆演習の学習支援用ページです。</p>
+                <p>下のボタンから龍大アカウントでログインして下さい。</p>
+              </span>
             </v-col>
             <v-col cols="12">
               <v-btn
@@ -26,14 +28,23 @@
               </v-btn>
             </v-col>
             <v-col cols="6" class="c">
-              <v-card>
-                <v-card-title class="font-weight-bold">
+              <v-card max-height="200" style="overflow-y: scroll;">
+                <v-card-title class="c">
                   <v-icon color="yellow darken-4">mdi-alert</v-icon>
                   個人情報の取り扱いについて
                 </v-card-title>
-                <v-card-text class="justify-end">
-                  <p>本サイト内では、数式の折りたたみと展開時に学籍番号と時刻を取得しています。</p>
-                  <p>取得したデータは、修士論文・研究のために用いる可能性がありますが、個人が特定できる情報は公表しません。</p>
+                <v-card-text class="justify-end tc">
+                  <p
+                  >本サイト内では、数式の折りたたみ時と展開時に操作履歴として
+                    <ul>
+                      <li>Googleアカウントの登録名</li>
+                      <li>メールアドレス</li>
+                      <li>時刻</li>
+                    </ul>
+                    を取得しています。</p>
+                  <p>取得したデータは、修士研究の目的で利用させていただく可能性がございますが、個人が特定される情報を公表することはありません。</p>
+                  <p>ご了承いただける場合のみ、お使い頂くようお願いいたします。</p>
+                  <p style="text-align: end"> T20M008 藤原</p>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -112,9 +123,14 @@ export default {
 
 <style scoped>
 .c {
+  font-size: 16px;
   justify-content: center;
   position: relative;
   margin: auto;
+}
+.tc {
+  text-align: left;
+  overflow-y: scroll;
 }
 .custom-loader {
   animation: loader 1s infinite;

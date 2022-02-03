@@ -7,7 +7,7 @@
 /* eslint-disable no-unused-vars */
 
 import firebase from './firebase'
-import { allCollapse, allExpand, getUniqueStr } from '@/plugins/katex-collapsible.js'
+import { allCollapse, allExpand, getUniqueStr, CollectionName } from '@/plugins/katex-collapsible.js'
 import { getDefaultSetting, mutateDefaultSetting } from '@/plugins/katex-localStorage.js'
 
 // list of .katex-html
@@ -238,14 +238,14 @@ function fireStoreSaveLog(katexIndex, action) {
 
   firebase
     .firestore()
-    .collection('log')
+    .collection(CollectionName)
     .doc(firebase.auth().currentUser.uid)
     .collection('history')
     // .doc(String(Date.now()))
     .doc(getUniqueStr(811))
     .set({
       action,
-      date: Date(),
+      locale: new Date().toLocaleString(),
       href: window.location.href,
       id: katexIndex,
       // tex: katexMathML[katexIndex].innerText,
@@ -293,39 +293,43 @@ function setCoordinateContextMenu(katexContextMenu, x, y) {
 function setFunctionContextMenu(katexContextMenuUl, i) {
   const katexContextMenu = Array.from(document.getElementById('katex-context-menu'))
 
-  Array.from(katexContextMenuUl.children).forEach((li, liIndex) => {
-    if (liIndex === 0) {
-      li.addEventListener('click', (event) => {
-        showMathML(i)
-      })
-    } else if (liIndex === 1) {
-      li.addEventListener('click', (event) => {
-        showTeX(i)
-      })
-    } else if (liIndex === 2) {
-      li.addEventListener('click', (event) => {
-        copyMathML(i)
-      })
-    } else if (liIndex === 3) {
-      li.addEventListener('click', (event) => {
-        copyTeX(i)
-      })
-    } else if (liIndex === 4) {
-      li.addEventListener('click', (event) => {
-        fireStoreSaveLog(-100, 'all-collapse')
-        allCollapse()
-      })
-    } else if (liIndex === 5) {
-      li.addEventListener('click', (event) => {
-        fireStoreSaveLog(-200, 'all-expand')
-        allExpand()
-      })
-    } else if (liIndex === 6) {
-      li.addEventListener('click', (event) => {
-        // mutateDefaultSetting(false)
-      })
-    }
-  })
+  try {
+    Array.from(katexContextMenuUl.children).forEach((li, liIndex) => {
+      if (liIndex === 0) {
+        li.addEventListener('click', (event) => {
+          showMathML(i)
+        })
+      } else if (liIndex === 1) {
+        li.addEventListener('click', (event) => {
+          showTeX(i)
+        })
+      } else if (liIndex === 2) {
+        li.addEventListener('click', (event) => {
+          copyMathML(i)
+        })
+      } else if (liIndex === 3) {
+        li.addEventListener('click', (event) => {
+          copyTeX(i)
+        })
+      } else if (liIndex === 4) {
+        li.addEventListener('click', (event) => {
+          fireStoreSaveLog(-100, 'all-collapse')
+          allCollapse()
+        })
+      } else if (liIndex === 5) {
+        li.addEventListener('click', (event) => {
+          fireStoreSaveLog(-200, 'all-expand')
+          allExpand()
+        })
+      } else if (liIndex === 6) {
+        li.addEventListener('click', (event) => {
+          // mutateDefaultSetting(false)
+        })
+      }
+    })
+  } catch (e) {
+    console.worn(e)
+  }
 }
 async function katexContextMenu() {
   // console.log(

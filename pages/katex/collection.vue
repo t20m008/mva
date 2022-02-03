@@ -304,7 +304,7 @@
 <script>
 export default {
   mounted() {
-    this.b()
+    // this.b()
 
     this.$katexLocalStorage()
     const katexStatus = this.$getKatexStatus()

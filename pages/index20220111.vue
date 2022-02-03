@@ -112,7 +112,7 @@
       <ul>
         <li>$ t $ を説明変数 (いままでの $ x $ )</li>
         <li>$ X $ を目的変数 (いままでの $ y $ )</li>
-        <li>$ X, \epsilon_t $ が確率変数</li>	
+        <li>$ X, \epsilon_t $ が確率変数</li>
       </ul>
 
       $$ \begin{aligned} X_t=\beta_0+\beta_1 \times t + \epsilon_t,\quad \text{\(\epsilon_t\)は独立同分布} ,\quad
@@ -243,9 +243,9 @@
       </v-alert>
       \[ \begin{aligned} \mathrm{E}[X_t] &=\mathrm{E}[\phi_1^t X_0 + \sum_{k=0}^{t-1} \phi_1^k \epsilon_{t-k}]\\ &=\phi_1^t
       \mathrm{E}[X_0] \end{aligned} \] \[ \begin{aligned} \mathrm{V}[X_t] &=\mathrm{V}[\phi_1^t X_0 + \sum_{k=0}^{t-1} \phi_1^k
-      \epsilon_{t-k}]\\ &=\mathrm{V}[\phi_1^t X_0] + \sum_{k=0}^{t-1}  \mathrm{V}[\phi_1^k\epsilon_{t-k}]\\
-      &=\phi_1^{2t}\mathrm{V}[X_0] + \sum_{k=0}^{t-1} \phi_1^{2k} \sigma^2\\ &=\phi_1^t\mathrm{V}[X_0] + \frac{1-\phi_1^{2t}}{1-\phi_1^2}
-      \sigma^2 \end{aligned} \]
+      \epsilon_{t-k}]\\ &=\mathrm{V}[\phi_1^t X_0] + \sum_{k=0}^{t-1} \mathrm{V}[\phi_1^k\epsilon_{t-k}]\\
+      &=\phi_1^{2t}\mathrm{V}[X_0] + \sum_{k=0}^{t-1} \phi_1^{2k} \sigma^2\\ &=\phi_1^t\mathrm{V}[X_0] +
+      \frac{1-\phi_1^{2t}}{1-\phi_1^2} \sigma^2 \end{aligned} \]
 
       <p>
         \(|\phi_1| &lt; 1, t\rightarrow+0\)で, 定常の望みあり, \(\mathrm{V}[X_t]\)も一定. 以下,
@@ -499,12 +499,12 @@ result.predict(t1,t2) # t1からt2までの期間を予測した時系列
       >
         <b>移動平均モデルMA(\(k\))の母平均値・母共分散</b>
       </v-alert>
-      <!-- $$ mathrm{E}[X_t]=0 $$ $$ \begin{aligned}
+      $$ \mathrm{E}[X_t]=0 $$ $$ \begin{aligned}
       \mathrm{V}[X_t]&=\mathrm{V}[\epsilon_t+\theta_1\epsilon_{t-1}+\cdots+\theta_k\epsilon_k]\\ &=
       \mathrm{V}[\epsilon_t]+\theta_1^2\mathrm{V}[\epsilon_{t-1}]+\cdots+\theta_k^2\mathrm{V}[\epsilon_k]\\
       &=(1+\theta_1^2+\cdots+\theta_k^2)\sigma^2 \end{aligned} $$ $$ \begin{aligned} \mathrm{Cov}[X_t,X_{t-s}]&=\\ &=\cdots\\ &=
       \begin{cases} 0&(k\gt s)\\ (\theta_0\theta_{s}+\theta_1\theta_{s+1}+\cdots +\theta_{k-s}\theta_k)\sigma^2 &(k\leq s)
-      \end{cases} \end{aligned} $$ -->
+      \end{cases} \end{aligned} $$
 
       <v-alert
         text
